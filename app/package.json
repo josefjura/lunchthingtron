@@ -3,7 +3,7 @@
   "productName": "LunchThingtron",
   "identifier": "my.lunchthingy.fromboilerplate",
   "description": "Electron env test made from electron-boilerplate. Testing on a LunchThingy concept.",
-  "homepage": "https://github.com/twolfson/google-music-electron",
+  "homepage": "https://github.com/josefjura/lunchthingtron",
   "version": "0.2",
   "author": "Josef Jura <josef.jura@hotmail.com>",
   "main": "background.js",
@@ -12,10 +12,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/twolfson/google-music-electron.git"
+    "url": "git://github.com/josefjura/lunchthingtron.git"
   },
   "bugs": {
-    "url": "https://github.com/twolfson/google-music-electron/issues"
+    "url": "https://github.com/josefjura/lunchthingtron/issues"
   }
   "dependencies": {
     "angular": "^1.4.7",
