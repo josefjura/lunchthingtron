@@ -4,7 +4,7 @@
   "identifier": "my.lunchthingy.fromboilerplate",
   "description": "Electron env test made from electron-boilerplate. Testing on a LunchThingy concept.",
   "homepage": "https://github.com/josefjura/lunchthingtron",
-  "version": "0.2",
+  "version": "0.2.0",
   "author": "Josef Jura <josef.jura@hotmail.com>",
   "main": "background.js",
   "config": {
@@ -16,7 +16,7 @@
   },
   "bugs": {
     "url": "https://github.com/josefjura/lunchthingtron/issues"
-  }
+  },
   "dependencies": {
     "angular": "^1.4.7",
     "angular-animate": "^1.4.7",
