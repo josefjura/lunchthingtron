@@ -9,7 +9,9 @@
     var env = require('./vendor/electron_boilerplate/env_config');
     var devHelper = require('./vendor/electron_boilerplate/dev_helper');
     var windowStateKeeper = require('./vendor/electron_boilerplate/window_state');
+    var Settings = require('./classes/Settings');
 
+    var config = new Settings();
     var configuration = null;
     // Report crashes to our server.
     require('crash-reporter').start();
@@ -36,54 +38,6 @@
     // This method will be called when Electron has finished
     // initialization and is ready to create browser windows.
     app.on('ready', function () {
-        ipc.on('load-config', function (event, arg) {
-            //app.getPath('appData')
-            if (configuration != null) {
-                event.returnValue = configuration;
-            }
-            else {
-                console.log("Loading configuration...");
-                var path = app.getPath('userData') + "/settings.json";
-                try {
-                    //test to see if settings exist
-                    fs.openSync(path, 'r+'); //throws error if file doesn't exist
-                    console.log("Configuration file opened...");
-                    var dataJson = fs.readFileSync(path).toString(); //file exists, get the contents
-                    console.log("Data acquired... : " + dataJson);
-                    if (dataJson != undefined && dataJson !== "")
-                        configuration = event.returnValue = JSON.parse(dataJson);
-                    console.log("Data parsed...");
-                } catch (err) {
-                    //if error, then there was no settings file (first run).
-                    console.log("Error: " + err);
-                    try {
-                        console.log("Creating settings file...");
-                        var fd = fs.openSync(path, 'w+');
-                        console.log("Created settings file...");
-                    } catch (err) {
-                        console.log("Error creating settings file: " + JSON.stringify(err));
-                        throw err;
-                    }
-                }
-            }
-        });
-
-        function saveConfiguration(configData) {
-            console.log("Saving settings...");
-            var path = app.getPath('userData') + "/settings.json";
-            console.log("Path to config file " + path);
-            var data = JSON.stringify(configData);
-            console.log(data);
-            var fd = fs.openSync(path, 'w+');
-            console.log("Config file opened");
-            fs.writeSync(fd, data);
-            console.log("It's saved!");
-        };
-
-        ipc.on('update-config', function (event, arg) {
-            this.configuration = arg;
-        });
-
         process.on('uncaughtException', function (error) {
             console.log(error);
         });
