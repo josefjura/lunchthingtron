@@ -8,7 +8,7 @@
     var fs = require('fs');
     var env = require('./vendor/electron_boilerplate/env_config');
     var devHelper = require('./vendor/electron_boilerplate/dev_helper');
-    var windowStateKeeper = require('./vendor/electron_boilerplate/window_state');    
+    var windowStateKeeper = require('./vendor/electron_boilerplate/window_state');
 
     var configuration = null;
     // Report crashes to our server.
