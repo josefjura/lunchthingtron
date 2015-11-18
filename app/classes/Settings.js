@@ -1,6 +1,6 @@
-﻿var ipc = require('ipc');
-var Configstore = require('configstore');
-var pkg = require('../package.json');
+﻿var ipc = require("ipc");
+var Configstore = require("configstore");
+var pkg = require("../package.json");
 
 function Settings() {
     this.config = new Configstore(pkg.name,
@@ -8,13 +8,16 @@ function Settings() {
         restaurants: []
     });
 
-    var that = this;
-    ipc.on('get-config', function handleGetConfigSync(evt) {
-        evt.returnValue = that.getAll();
+    var self = this;
+
+    ipc.on("set-config", function (evt, args) {
+        self.replace(args);
+        evt.returnValue = args;
     });
-    ipc.on('set-config', function handleGetConfigSync(evt, args) {
-        that.replace(args);
+    ipc.on("get-config", function (evt) {
+        evt.returnValue = self.getAll();
     });
+
 }
 
 Settings.prototype = {
@@ -35,6 +38,7 @@ Settings.prototype = {
     },
     replace: function(config) {
         this.config.all = config;
+        return true;
     }
 }
 
