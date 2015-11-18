@@ -3,7 +3,8 @@ var _templateBase = "./pages";
 angular.module("app", [
     "ngRoute",
     "ngMaterial",
-    "ngAnimate"
+    "ngAnimate",
+    "ngMessages"
 ])
 .config(["$routeProvider", function ($routeProvider) {
     $routeProvider.when("/", {
@@ -14,7 +15,7 @@ angular.module("app", [
     .when("/settings", {
         templateUrl: _templateBase + "/settings/settings.html",
         controller: "settingsController",
-        controllerAs: "_sctrl"
+        controllerAs: "_ctrl"
     });
     $routeProvider.otherwise({ redirectTo: "/" });
 }
