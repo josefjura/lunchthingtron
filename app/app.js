@@ -36,13 +36,5 @@ angular.module("app", [
             controller: 'RestaurantsListCtrl as _ctrl'
           }
         }
-      }).state('main.restaurants-add', {
-        url: '/restaurants-add',
-        views: {
-          'pageContent': {
-            templateUrl: 'pages/restaurants/restaurants-add.html',
-            controller: 'RestaurantsAddCtrl as _ctrl'
-          }
-        }
       });
   });

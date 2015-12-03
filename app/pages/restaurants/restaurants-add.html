@@ -1,0 +1,24 @@
+<md-dialog aria-label="Mango (Fruit)" ng-cloak>
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>
+        	<span>Add restaurants</span>
+		</h2>
+			<md-button class="md-icon-button" aria-label="Add restaurant" ng-click="_ctrl.hide()">
+				<a>
+					<md-icon md-svg-src="./img/close.svg"></md-icon>
+				</a>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-content>
+		<md-list>
+			<md-list-item class="md-2-line" ng-repeat="rest in _ctrl.results">
+				<div class="md-list-item-text" layout="column">
+					<h3>{{ rest.name }}</h3>
+					<p>{{ rest.url }}</p>
+				</div>
+			</md-list-item>
+		</md-list>
+	</md-content>
+</md-dialog>

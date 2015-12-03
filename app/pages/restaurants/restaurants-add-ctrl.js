@@ -1,12 +1,12 @@
 'use strict';
 angular.module('app')
-	.controller('RestaurantsAddCtrl', function ($log, UserConfig, Zomato) {
+	.controller('RestaurantsAddCtrl', function ($log, $mdDialog, UserConfig, Zomato) {
 		var self = this;
-		self.searchTerm = '';
-		self.results = [];
-		$log.log('Hello from your Controller: RestaurantNewCtrl in module main:. This is your controller:', this);
+		this.searchTerm = '';
+		this.results = [];
+		$log.log('Hello from your Controller: RestaurantsAddCtrl in module main:. This is your controller:', this);
 
-		self.search = function () {
+		this.search = function () {
 			Zomato.searchAsync(self.searchTerm, function (response) {
 				if (response.success) {
 					self.results = markExisting(response.result);
@@ -18,15 +18,19 @@ angular.module('app')
 			});
 
 		};
-
-		self.add = function (item) {
+		
+		this.hide = function () {
+			$mdDialog.hide();
+		}
+		
+		this.add = function (item) {
 			if (!item.added) {
 				UserConfig.addRestaurant(item);
 				item.added = true;
 			}
 		};
 
-		self.remove = function (item) {
+		this.remove = function (item) {
 			UserConfig.removeRestaurant(item);
 			item.added = false;
 		};
