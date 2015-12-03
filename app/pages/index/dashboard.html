@@ -6,11 +6,13 @@
             </h2>
             <span flex></span>
             <span>LunchThingtron</span>
-            <md-button class="md-icon-button" aria-label="Refresh" ng-click="_ctrl.refresh()">
+            <md-button class="md-icon-button" aria-label="Refresh" ng-click="_ctrl.loadRestaurants(true)">
                 <md-icon md-svg-src="./img/refresh.svg"></md-icon>
             </md-button>
-            <md-button class="md-icon-button" aria-label="Settings" ng-click="_ctrl.openSettings()">
-                <md-icon md-svg-src="./img/settings.svg"></md-icon>
+            <md-button class="md-icon-button" aria-label="Settings">
+                <a ui-sref="main.settings">
+                    <md-icon md-svg-src="./img/settings.svg"></md-icon>
+                </a>
             </md-button>
         </div>
     </md-toolbar>

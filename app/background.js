@@ -67,8 +67,6 @@
 
         mainWindow.on('close', function () {
             mainWindowState.saveState(mainWindow);
-            if (configuration)
-                saveConfiguration(configuration);
         });
 
         // Emitted when the window is closed.

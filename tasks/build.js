@@ -3,6 +3,7 @@
 var pathUtil = require('path');
 var Q = require('q');
 var gulp = require('gulp');
+var inject = require('gulp-inject');
 var rollup = require('rollup');
 var less = require('gulp-less');
 var jetpack = require('fs-jetpack');
@@ -19,18 +20,36 @@ var paths = {
         './node_modules/**',
         './vendor/**',
         './**/*.html',
-		'./pages/**',
-		'./classes/**/*.js',
-		'./services/**/*.js',
-		'./img/**/*'
+        './pages/**',
+        './classes/**/*.js',
+        './services/**/*.js',
+        './img/**/*'
     ],
+    controllers: './app/pages/**/*-ctrl.js',
+    services: './app/services/**/*.js',
+    classes: './app/classes/**/*.js'
 }
 
 // -------------------------------------
 // Tasks
 // -------------------------------------
 
-gulp.task('clean', function(callback) {
+gulp.task('inject', ['clean'], function () {
+    return gulp.src('./app/app.html')
+        .pipe(inject(
+            gulp.src(paths.controllers,
+                { read: false }), { relative: true, name: 'controllers' }))
+        .pipe(inject(
+            gulp.src(paths.services,
+                { read: false }), { relative: true, name: 'services' }))
+        .pipe(inject(
+            gulp.src(paths.classes,
+                { read: false }), { relative: true, name: 'classes' }))
+        .pipe(gulp.dest('./app'));
+})
+
+
+gulp.task('clean', function (callback) {
     return destDir.dirAsync('.', { empty: true });
 });
 
@@ -41,7 +60,7 @@ var copyTask = function () {
         matching: paths.copyFromAppDir
     });
 };
-gulp.task('copy', ['clean'], copyTask);
+gulp.task('copy', ['clean', 'inject'], copyTask);
 gulp.task('copy-watch', copyTask);
 
 
@@ -98,8 +117,8 @@ gulp.task('bundle-watch', bundleTask);
 
 var lessTask = function () {
     return gulp.src('app/stylesheets/main.less')
-    .pipe(less())
-    .pipe(gulp.dest(destDir.path('stylesheets')));
+        .pipe(less())
+        .pipe(gulp.dest(destDir.path('stylesheets')));
 };
 gulp.task('less', ['clean'], lessTask);
 gulp.task('less-watch', lessTask);
@@ -133,4 +152,4 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build', ['bundle', 'less', 'copy', 'finalize']);
+gulp.task('build', ['bundle', 'less', 'copy', 'finalize', 'inject']);

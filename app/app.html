@@ -8,20 +8,31 @@
     <link rel="stylesheet" href="./node_modules/angular-material/angular-material.css" />
 </head>
 <body>
-    <ng-view></ng-view>
+<!--<ng-include src="'./pages/layout.html'"></ng-include>-->
+    <ui-view />
     <script src="./node_modules/angular/angular.js"></script>
     <script src="./node_modules/angular-route/angular-route.js"></script>
+    <script src="./node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="./node_modules/angular-animate/angular-animate.js"></script>
     <script src="./node_modules/angular-aria/angular-aria.js"></script>
     <script src="./node_modules/angular-material/angular-material.js"></script>
     <script src="./node_modules/angular-messages/angular-messages.min.js"></script>
     <script src="./app.js"></script>
-    <script src="./classes/Settings.js"></script>
-    <script src="./classes/RestaurantData.js"></script>
-    <script src="./classes/RestaurantError.js"></script>
-    <script src="./services/zomatoService.js"></script>
-    <script src="./pages/settings/settingsCtrl.js"></script>
-    <script src="./pages/index/indexCtrl.js"></script>
+
+<!-- classes:js -->
+<script src="classes/RestaurantData.js"></script>
+<script src="classes/RestaurantError.js"></script>
+<script src="classes/Settings.js"></script>
+<!-- endinject -->
+<!-- services:js -->
+<script src="services/zomatoService.js"></script>
+<!-- endinject -->
+<!-- controllers:js -->
+<script src="pages/index/dashboard-ctrl.js"></script>
+<script src="pages/restaurants/restaurants-add-ctrl.js"></script>
+<script src="pages/restaurants/restaurants-list-ctrl.js"></script>
+<script src="pages/settings/settings-ctrl.js"></script>
+<!-- endinject -->
     
 </body>
 </html>

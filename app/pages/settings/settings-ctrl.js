@@ -4,7 +4,7 @@
     var ipc = require("ipc");
 
     angular.module("app")
-        .controller("settingsController", ["$q", "$mdDialog", "$location", SettingsCtrl])
+        .controller("SettingsCtrl", ["$q", "$mdDialog", "$location", SettingsCtrl])
         .config(function ($mdThemingProvider) {
             // Configure a dark theme with primary foreground yellow
             $mdThemingProvider.theme('docs-dark', 'default')

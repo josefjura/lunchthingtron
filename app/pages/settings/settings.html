@@ -5,8 +5,10 @@
                 <span>Settings</span>
             </h2>
             <span flex></span>
-            <md-button class="md-icon-button" aria-label="Done" ng-click="_ctrl.saveSettings()">
-                <md-icon md-svg-src="./img/done.svg"></md-icon>
+             <md-button class="md-icon-button" aria-label="Done">
+                <a ui-sref="main.dashboard({refresh:false})">
+                    <md-icon md-svg-src="./img/done.svg"></md-icon>
+                </a>
             </md-button>
         </div>
     </md-toolbar>
