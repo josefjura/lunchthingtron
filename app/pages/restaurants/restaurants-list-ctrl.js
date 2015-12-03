@@ -1,6 +1,6 @@
 'use strict';
 angular.module('app')
-  .controller('RestaurantsCtrl', function ($log, $scope, Config, UserConfig) {
+  .controller('RestaurantsListCtrl', function ($log, $scope, Config, UserConfig) {
     var self = this;    
     $log.log('Hello from your Controller: RestaurantsCtrl in module main:. This is your controller:', this);
 

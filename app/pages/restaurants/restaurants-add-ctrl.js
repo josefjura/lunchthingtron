@@ -1,6 +1,6 @@
 'use strict';
 angular.module('app')
-	.controller('RestaurantsNewCtrl', function ($log, UserConfig, Zomato) {
+	.controller('RestaurantsAddCtrl', function ($log, UserConfig, Zomato) {
 		var self = this;
 		self.searchTerm = '';
 		self.results = [];
