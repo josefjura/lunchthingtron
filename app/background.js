@@ -9,10 +9,7 @@
     var env = require('./vendor/electron_boilerplate/env_config');
     var devHelper = require('./vendor/electron_boilerplate/dev_helper');
     var windowStateKeeper = require('./vendor/electron_boilerplate/window_state');
-    var Settings = require('./classes/Settings');
 
-    var config = new Settings();
-    var configuration = null;
     // Report crashes to our server.
     require('crash-reporter').start();
 

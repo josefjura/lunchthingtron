@@ -4,7 +4,8 @@ angular.module("app", [
   "ngMaterial",
   "ngAnimate",
   "ui.router",
-  "ngMessages"
+  "ngMessages",
+  "utils"
 ])
   .config(function ($stateProvider, $urlRouterProvider) {
     
@@ -27,15 +28,6 @@ angular.module("app", [
           'pageContent': {
             templateUrl: 'pages/index/dashboard.html',
             controller: 'DashboardCtrl as _ctrl'
-          }
-        }
-      })
-      .state('main.settings', {
-        url: '/settings',
-        views: {
-          'pageContent': {
-            templateUrl: 'pages/settings/settings.html',
-            controller: 'SettingsCtrl as _ctrl'
           }
         }
       })

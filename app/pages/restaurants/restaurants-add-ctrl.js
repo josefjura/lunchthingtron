@@ -1,20 +1,48 @@
-(function () {
-    "use strict";
+'use strict';
+angular.module('app')
+	.controller('RestaurantsNewCtrl', function ($log, UserConfig, Zomato) {
+		var self = this;
+		self.searchTerm = '';
+		self.results = [];
+		$log.log('Hello from your Controller: RestaurantNewCtrl in module main:. This is your controller:', this);
 
-    var ipc = require("ipc");
+		self.search = function () {
+			Zomato.searchAsync(self.searchTerm, function (response) {
+				if (response.success) {
+					self.results = markExisting(response.result);
+					self.searchTerm = '';
+				}
+				else {
+					$log.log(response.error);
+				}
+			});
 
-    angular.module("app")
-        .controller("RestaurantsAddCtrl", ["$q", "$mdDialog", "$location", RestaurantsAddCtrl])
-        .config(function ($mdThemingProvider) {
-            // Configure a dark theme with primary foreground yellow
-            $mdThemingProvider.theme('docs-dark', 'default')
-              .primaryPalette('yellow')
-              .dark();
-        });
+		};
 
-    function RestaurantsAddCtrl($q, $mdDialog, $location) {
-        var self = this;
-		
-    }
+		self.add = function (item) {
+			if (!item.added) {
+				UserConfig.addRestaurant(item);
+				item.added = true;
+			}
+		};
 
-})();
+		self.remove = function (item) {
+			UserConfig.removeRestaurant(item);
+			item.added = false;
+		};
+
+		function markExisting(results) {
+			var rests = UserConfig.getRestaurantList();
+			for (var i in results) {
+				if (results.hasOwnProperty(i)) {
+					for (var ii in rests) {
+						if (rests.hasOwnProperty(ii)) {
+							results[i].added = results[i].url === rests[ii].url;
+						}
+					}
+				}
+			}
+
+			return results;
+		}
+	});

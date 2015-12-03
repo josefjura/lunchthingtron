@@ -1,20 +1,13 @@
-(function () {
-    "use strict";
+'use strict';
+angular.module('app')
+  .controller('RestaurantsCtrl', function ($log, $scope, Config, UserConfig) {
+    var self = this;    
+    $log.log('Hello from your Controller: RestaurantsCtrl in module main:. This is your controller:', this);
 
-    var ipc = require("ipc");
+    this.refresh();
 
-    angular.module("app")
-        .controller("RestaurantsListCtrl", ["$q", "$mdDialog", "$location", RestaurantsListCtrl])
-        .config(function ($mdThemingProvider) {
-            // Configure a dark theme with primary foreground yellow
-            $mdThemingProvider.theme('docs-dark', 'default')
-              .primaryPalette('yellow')
-              .dark();
-        });
-
-    function RestaurantsListCtrl($q, $mdDialog, $location) {
-        var self = this;
-		
+    this.refresh = function () {
+      self.restaurants = UserConfig.getRestaurantList();
     }
 
-})();
+  });
