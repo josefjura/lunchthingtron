@@ -11,10 +11,7 @@ angular.module("app", [
     
     // ROUTING with ui.router
     $urlRouterProvider.
-      when('/', '/main/dashboard').
-      otherwise(function () {
-        return '/main/dashboard?refresh=false';
-      });
+      otherwise('/main/dashboard?refresh=false');
 
     $stateProvider
     // this state is placed in the <ion-nav-view> in the index.html
