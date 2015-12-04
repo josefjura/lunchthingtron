@@ -19,7 +19,7 @@
     <md-content class="restaurantContent">
         <section ng-repeat="restaurant in _ctrl.restaurants">
             <md-subheader class="md-primary" ng-class="{'md-accent':!restaurant.isLoaded}">
-                <h2>{{ restaurant.name }}<span ng-if="!restaurant.isLoaded"> - daily menu not found</span></h2>
+                <h2>{{ restaurant.name }}<span ng-show="!restaurant.isLoaded"> - daily menu not found</span></h2>
             </md-subheader>
             <md-list>
                 <md-list-item ng-repeat="item in restaurant.menu">
