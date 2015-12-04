@@ -1,4 +1,6 @@
 /* global $ */
+window.$ = require('jquery');
+
 'use strict';
 angular.module('app')
 	.service('Zomato', function ($q, $log, $http) {
