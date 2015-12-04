@@ -1,9 +1,8 @@
-<md-dialog aria-label="Mango (Fruit)" ng-cloak>
+<md-dialog aria-label="Add restaurants" ng-cloak class="fullscreen">
 	<md-toolbar>
 		<div class="md-toolbar-tools">
-			<h2>
-        	<span>Add restaurants</span>
-		</h2>
+			<h2>Add restaurant</h2>
+			<span flex></span>
 			<md-button class="md-icon-button" aria-label="Add restaurant" ng-click="_ctrl.hide()">
 				<a>
 					<md-icon md-svg-src="./img/close.svg"></md-icon>
@@ -11,7 +10,21 @@
 			</md-button>
 		</div>
 	</md-toolbar>
-	<md-content>
+	<md-dialog-content style="max-height:810px;" layout-padding>
+		<div layout layout-sm="column">
+			<md-input-container class="md-icon-float md-block" flex>
+				<!-- Use floating label instead of placeholder -->
+				<label>Name</label>
+				<md-icon md-svg-src="img/search.svg" class="name"></md-icon>
+				<input ng-model="_ctrl.searchTerm" type="text">
+			</md-input-container>
+			<md-button class="md-button" aria-label="Search for restaurant" ng-click="_ctrl.search()">
+				Search
+			</md-button>
+		</div>
+		<div layout="row" layout-sm="column" layout-align="center center" ng-show="_ctrl.isSearching">
+			<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+		</div>
 		<md-list>
 			<md-list-item class="md-2-line" ng-repeat="rest in _ctrl.results">
 				<div class="md-list-item-text" layout="column">
@@ -20,5 +33,5 @@
 				</div>
 			</md-list-item>
 		</md-list>
-	</md-content>
+	</md-dialog-content>
 </md-dialog>
