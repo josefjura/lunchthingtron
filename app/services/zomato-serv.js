@@ -1,20 +1,23 @@
 /* global $ */
 'use strict';
 angular.module('app')
-	.service('Zomato', function ($log, $http) {
-		this.readUrl = function (id, url) {
+	.service('Zomato', function ($q, $log, $http) {
+		this.readUrlAsync = function (id, url) {
 			var result = {};
+			var deffered = $q.defer();
 			$http.get(url + '/menu#daily')
 				.then(function (response) {
 					var parseRes = parseResponse(id, response.data, true);
 					result = { success: true, result: parseRes };
+					 deffered.resolve(result);
 				},
 					function (error) {
 						$log.log(error);
 						result = { success: false, error: error };
+						deffered.resolve(result);
 					});
-
-			return result;
+					
+			return deffered.promise;
 		};
 
 		this.searchAsync = function (searchTerm, callback) {

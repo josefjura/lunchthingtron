@@ -28,8 +28,8 @@
 		<md-list>
 			<md-list-item class="md-2-line" ng-repeat="rest in _ctrl.results">
 				<div class="md-list-item-text" layout="column">
-					<h3>{{ rest.name }}</h3>
-					<p>{{ rest.url }}</p>
+					<p> {{ rest.name }} </p>
+					<md-checkbox class="md-secondary" ng-model="rest.added" ng-change="_ctrl.stateChange(rest)"></md-checkbox>
 				</div>
 			</md-list-item>
 		</md-list>

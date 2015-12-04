@@ -22,7 +22,7 @@
                 <h2>{{ restaurant.name }}<span ng-if="!restaurant.isLoaded"> - daily menu not found</span></h2>
             </md-subheader>
             <md-list>
-                <md-list-item ng-repeat="item in restaurant.items">
+                <md-list-item ng-repeat="item in restaurant.menu">
 
                     <div class="md-list-item-text" style="padding-right: 40px;">
                         {{item.text}}

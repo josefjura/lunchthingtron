@@ -16,6 +16,8 @@ angular.module('app')
         targetEvent: event,
         clickOutsideToClose: true,
         autoWrap: true
+      }).then(function () {
+        self.refresh();
       });
     }
 

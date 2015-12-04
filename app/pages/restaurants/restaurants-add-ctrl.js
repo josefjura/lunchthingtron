@@ -17,12 +17,21 @@ angular.module('app')
 				}
 				else {
 					$log.log(response.error);
-				}				
+				}
 			});
 		};
 
 		this.hide = function () {
 			$mdDialog.hide();
+		}
+
+		this.stateChange = function (rest) {
+			if (rest.added) {
+				UserConfig.addRestaurant(rest);
+			}
+			else {
+				UserConfig.removeRestaurant(rest);
+			}
 		}
 
 		this.add = function (item) {
