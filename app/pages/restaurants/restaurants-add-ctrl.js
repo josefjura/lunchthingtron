@@ -56,7 +56,9 @@ angular.module('app')
 				if (results.hasOwnProperty(i)) {
 					for (var ii in rests) {
 						if (rests.hasOwnProperty(ii)) {
-							results[i].added = results[i].url === rests[ii].url;
+							var same = results[i].url === rests[ii].url;
+							results[i].added = same;
+							if (same) { break; }
 						}
 					}
 				}

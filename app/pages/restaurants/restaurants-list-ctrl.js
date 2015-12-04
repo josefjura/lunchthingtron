@@ -4,11 +4,11 @@ angular.module('app')
     var self = this;
     $log.log('Hello from your Controller: RestaurantsCtrl in module main:. This is your controller:', this);
 
-    this.refresh = function () {
+    self.refresh = function () {
       self.restaurants = UserConfig.getRestaurantList();
     }
 
-    this.openAdd = function (event) {
+    self.openAdd = function (event) {
       $mdDialog.show({
         controller: 'RestaurantsAddCtrl as _ctrl',
         templateUrl: './pages/restaurants/restaurants-add.html',
@@ -21,7 +21,14 @@ angular.module('app')
       });
     }
 
+    self.removeRestaurant = function (rest) {
+      var ind = self.restaurants.indexOf(rest);
+      if (ind > -1) {
+        self.restaurants.splice(ind, 1);
+        UserConfig.removeRestaurant(rest);
+      }
+    }
 
-    this.refresh();
+    self.refresh();
 
   });
