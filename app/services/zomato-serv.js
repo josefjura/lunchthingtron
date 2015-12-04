@@ -22,17 +22,20 @@ angular.module('app')
 			return deffered.promise;
 		};
 
-		this.searchAsync = function (searchTerm, callback) {
+		this.searchAsync = function (searchTerm) {
+			var deffered = $q.defer();
 			var url = 'https://www.zomato.com/cs/praha/restaurace?q=' + encodeURIComponent(searchTerm);
 			$http.get(url)
 				.then(function (response) {
 					var searchRes = parseSearch(response.data);
-					callback({ success: true, result: searchRes });
+					deffered.resolve({ success: true, result: searchRes });					
 				},
 					function (error) {
 						$log.log(error);
-						callback({ success: false, error: error });
+						deffered.resolve({ success: false, error: error });
 					});
+					
+			return deffered.promise;
 		};
 
 		function parseResponse(id, data, parseItems) {

@@ -9,16 +9,20 @@ angular.module('app')
 
 		this.search = function () {
 			this.isSearching = true;
-			Zomato.searchAsync(self.searchTerm, function (response) {
-				self.isSearching = false;
-				if (response.success) {
-					self.results = markExisting(response.result);
-					self.searchTerm = '';
-				}
-				else {
-					$log.log(response.error);
-				}
-			});
+			Zomato.searchAsync(self.searchTerm)
+				.then(function (response) {
+					self.isSearching = false;
+					if (response.success) {
+						self.results = markExisting(response.result);
+						self.searchTerm = '';
+					}
+					else {
+						$log.log(response.error);
+					}
+				},
+					function (response) {
+						$log.log(response.error);
+					});
 		};
 
 		this.hide = function () {
