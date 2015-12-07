@@ -1,6 +1,6 @@
 'use strict';
 angular.module('app')
-  .controller('RestaurantsListCtrl', function ($log, $scope, $mdDialog, UserConfig) {
+  .controller('RestaurantsListCtrl', function ($log, $state, $scope, $mdDialog, UserConfig) {
     var self = this;
     $log.log('Hello from your Controller: RestaurantsCtrl in module main:. This is your controller:', this);
 
@@ -27,6 +27,10 @@ angular.module('app')
         self.restaurants.splice(ind, 1);
         UserConfig.removeRestaurant(rest);
       }
+    }
+
+    self.openRestaurant = function (rest) {
+      $state.go('main.webview', {url: rest.url});
     }
 
     self.refresh();

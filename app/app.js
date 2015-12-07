@@ -28,6 +28,15 @@ angular.module("app", [
           }
         }
       })
+      .state('main.webview', {
+        url: '/view?url',
+        views: {
+          'pageContent': {
+            templateUrl: 'pages/webview/index.html',
+            controller: 'WebViewCtrl as _ctrl'
+          }
+        }
+      })
       .state('main.restaurants', {
         url: '/restaurants',
         views: {

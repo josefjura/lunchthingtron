@@ -21,8 +21,10 @@
 		<md-list-item class="md-2-line" ng-repeat="rest in _ctrl.restaurants">
 			<div class="md-list-item-text" layout="column">
 				<p> {{ rest.name }} </p>
-				<md-icon md-svg-src="./img/delete.svg" ng-click="_ctrl.removeRestaurant(rest)" aria-label="Delete" class="md-secondary md-hue-3"></md-icon>
+				<md-icon md-svg-src="./img/home.svg" ng-click="_ctrl.openRestaurant(rest)" aria-label="Delete" class="md-secondary first"></md-icon>
+				<md-icon md-svg-src="./img/delete.svg" ng-click="_ctrl.removeRestaurant(rest)" aria-label="Delete" class="md-secondary second md-hue-3"></md-icon>
 			</div>
-		</md-list-item>
+			<md-divider inset></md-divider>
+		</md-list-item>		
 	</md-list>
 </md-content>

@@ -1,0 +1,17 @@
+<md-toolbar>
+	<div class="md-toolbar-tools">
+		<md-button class="md-icon-button" aria-label="Back">
+			<a ui-sref="main.restaurants">
+				<md-icon md-svg-src="./img/back.svg"></md-icon>
+			</a>
+		</md-button>
+		<span flex></span>
+		<h2>
+        	<span>Details</span>
+		</h2>
+	</div>
+</md-toolbar>
+
+<div style="width:100%;" class="restaurantContent">
+	<webview autosize="on" style="" ng-src="{{_ctrl.url}}"></webview>
+</div>
