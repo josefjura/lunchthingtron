@@ -3,7 +3,7 @@
   "productName": "LunchThingtron",
   "identifier": "my.lunchthingy.fromboilerplate",
   "description": "Electron env test made from electron-boilerplate. Testing on a LunchThingy concept.",
-  "homepage": "https://github.com/josefjura/lunchthingtron",
+  "homepage": "https://github.com/josefjura/lunchthingtron-electron",
   "version": "0.4.1",
   "author": "Josef Jura <josef.jura@hotmail.com>",
   "main": "background.js",
@@ -12,10 +12,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/josefjura/lunchthingtron.git"
+    "url": "git://github.com/josefjura/lunchthingtron-electron.git"
   },
   "bugs": {
-    "url": "https://github.com/josefjura/lunchthingtron/issues"
+    "url": "https://github.com/josefjura/lunchthingtron-electron/issues"
   },
   "dependencies": {
     "angular": "^1.4.7",
