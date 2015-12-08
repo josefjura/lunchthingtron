@@ -3,10 +3,12 @@
 var pathUtil = require('path');
 var Q = require('q');
 var gulp = require('gulp');
+var gulpUtil = require('gulp-util');
 var inject = require('gulp-inject');
 var rollup = require('rollup');
 var less = require('gulp-less');
 var jetpack = require('fs-jetpack');
+var replace = require('gulp-replace');
 
 var utils = require('./utils');
 var generateSpecsImportFile = require('./generate_specs_import');
@@ -145,6 +147,15 @@ gulp.task('finalize', ['clean'], function () {
     destDir.copy(configFilePath, 'env_config.json');
 });
 
+gulp.task('setKey', ['finalize', 'bundle', 'copy'], function () {
+    
+    var apiKey = projectDir.read('config/apiKey.json', 'json');
+    if (apiKey == null) { throw new gulpUtil.PluginError('setKey', 'Value for apiKey is not set in ./config/apiKey.json, communication with Zomato will not work properly'); }
+    
+    gulp.src(['./build/app.js'])
+        .pipe(replace(/##API_KEY##/, apiKey.key))
+        .pipe(gulp.dest('./build'));  
+})
 
 gulp.task('watch', function () {
     gulp.watch('app/**/*.js', ['bundle-watch']);
@@ -153,4 +164,4 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build', ['bundle', 'less', 'copy', 'finalize', 'inject']);
+gulp.task('build', ['bundle', 'less', 'copy', 'finalize', 'inject', 'setKey']);

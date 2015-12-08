@@ -6,6 +6,7 @@
     "gulp": "^3.9.0",
     "gulp-inject": "^3.0.0",
     "gulp-less": "^3.0.3",
+    "gulp-replace": "^0.5.4",
     "gulp-util": "^3.0.6",
     "jquery": "^2.1.4",
     "q": "^1.4.1",
