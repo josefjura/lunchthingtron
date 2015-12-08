@@ -1,3 +1,5 @@
+/// <reference path="typings/tsd.d.ts" />
+
 var _templateBase = "./pages";
 
 angular.module("app", [

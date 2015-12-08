@@ -9,6 +9,7 @@ var rollup = require('rollup');
 var less = require('gulp-less');
 var jetpack = require('fs-jetpack');
 var replace = require('gulp-replace');
+var tsc = require('gulp-typescript');
 
 var utils = require('./utils');
 var generateSpecsImportFile = require('./generate_specs_import');
@@ -93,9 +94,9 @@ var bundle = function (src, dest) {
 
 var bundleApplication = function () {
     return Q.all([
-        bundle(srcDir.path('background.js'), destDir.path('background.js')),
-        bundle(srcDir.path('app.js'), destDir.path('app.js')),
-        bundle(srcDir.path('extensions.js'), destDir.path('extensions.js')),
+        bundle(destDir.path('background.js'), destDir.path('background.js')),
+        bundle(destDir.path('app.js'), destDir.path('app.js')),
+        bundle(destDir.path('extensions.js'), destDir.path('extensions.js')),
     ]);
 };
 
@@ -114,8 +115,14 @@ var bundleTask = function () {
     }
     return bundleApplication();
 };
-gulp.task('bundle', ['clean'], bundleTask);
+gulp.task('bundle', ['compile','clean'], bundleTask);
 gulp.task('bundle-watch', bundleTask);
+
+gulp.task('compile', ['clean'], function () {
+    gulp.src(['./app/**/*.ts', '!./**/*.d.ts'])
+    .pipe(tsc())
+    .pipe(gulp.dest('./build'));
+})
 
 
 var lessTask = function () {
