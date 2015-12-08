@@ -27,9 +27,10 @@
 		</div>
 		<md-list>
 			<md-list-item class="md-2-line" ng-repeat="rest in _ctrl.results">
-				<div class="md-list-item-text" layout="column">
-					<p> {{ rest.name }} </p>
-					<md-checkbox class="md-secondary" ng-model="rest.added" ng-change="_ctrl.stateChange(rest)"></md-checkbox>
+				<img ng-src="{{rest.avatar}}" class="md-avatar thumb" alt="{{rest.name}}" />
+				<div class="md-list-item-text" layout="column">					
+					<h3> {{ rest.name }} </h3>
+					<md-checkbox class="md-secondary" ng-model="rest.added" aria-label="Added" ng-change="_ctrl.stateChange(rest)"></md-checkbox>
 				</div>
 			</md-list-item>
 		</md-list>
