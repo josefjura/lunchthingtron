@@ -1,0 +1,51 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Gulp",
+			"type": "node",
+			"request": "launch",
+			"program": "./node_modules/gulp/bin/gulp.js",
+			"stopOnEntry": false,
+			"args": [
+				"build"
+			],
+			"cwd": ".",
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"externalConsole": false,
+			"sourceMaps": false,
+			"outDir": null
+		},
+		{
+			"name": "Debug",
+			"type": "node",
+			"program": "./build/background.js",
+			"stopOnEntry": false,
+			"args": [
+				"run start"
+			],
+			"cwd": ".",
+			"runtimeExecutable": "c:\\Users\\jj185121\\AppData\\Roaming\\npm\\node_modules\\electron-prebuilt\\dist\\electron.exe",
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"sourceMaps": false,
+			"outDir": null
+		},
+		{
+			"name": "Attach",
+			"type": "node",
+			"request": "attach",
+			"port": 5858
+		}
+	]
+}
