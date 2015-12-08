@@ -3,6 +3,7 @@ node_modules
 .DS_Store
 Thumbs.db
 
+/app/typings/
 /config/apiKey.json
 /app/spec.js
 /build/
