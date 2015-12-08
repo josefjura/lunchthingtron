@@ -3,7 +3,7 @@ window.$ = require('jquery');
 
 'use strict';
 angular.module('app')
-	.service('Zomato', function ($q, $log, $http) {
+	.service('ZomatoScrape', function ($q, $log, $http) {
 		this.readUrlAsync = function (id, url) {
 			var result = {};
 			var deffered = $q.defer();
