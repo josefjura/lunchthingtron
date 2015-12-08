@@ -1,3 +1,5 @@
+/// <reference path="../../typings/tsd.d.ts" />
+
 'use strict';
 angular.module('app')
   .controller('RestaurantsListCtrl', function ($log, $state, $scope, $mdDialog, UserConfig) {

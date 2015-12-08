@@ -1,4 +1,6 @@
-﻿var ipc = require('ipc');
+﻿/// <reference path="../../typings/tsd.d.ts" />
+
+var ipc = require('ipc');
 
 (function () {
     "use strict";

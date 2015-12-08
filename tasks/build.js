@@ -23,22 +23,22 @@ var paths = {
         './node_modules/**',
         './vendor/**',
         './**/*.html',
-        './pages/**',
-        './classes/**/*.js',
-        './services/**/*.js',
+        // './pages/**/*.js',
+        // './classes/**/*.js',
+        // './services/**/*.js',
         './img/**/*'
     ],
-    controllers: './app/pages/**/*-ctrl.js',
-    services: './app/services/**/*.js',
-    classes: './app/classes/**/*.js'
+    controllers: './build/pages/**/*-ctrl.js',
+    services: './build/services/**/*.js',
+    classes: './build/classes/**/*.js'
 }
 
 // -------------------------------------
 // Tasks
 // -------------------------------------
 
-gulp.task('inject', ['clean'], function () {
-    return gulp.src('./app/app.html')
+gulp.task('inject', ['clean', 'compile'], function () {
+    return gulp.src('./build/app.html')
         .pipe(inject(
             gulp.src(paths.controllers,
                 { read: false }), { relative: true, name: 'controllers' }))
@@ -48,7 +48,7 @@ gulp.task('inject', ['clean'], function () {
         .pipe(inject(
             gulp.src(paths.classes,
                 { read: false }), { relative: true, name: 'classes' }))
-        .pipe(gulp.dest('./app'));
+        .pipe(gulp.dest('./build'));
 })
 
 

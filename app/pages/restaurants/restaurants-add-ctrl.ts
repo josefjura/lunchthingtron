@@ -1,3 +1,5 @@
+/// <reference path="../../typings/tsd.d.ts" />
+
 'use strict';
 angular.module('app')
 	.controller('RestaurantsAddCtrl', function ($log, $mdDialog, UserConfig, ZomatoAPI) {

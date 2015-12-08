@@ -1,4 +1,5 @@
-/* global $ */
+/// <reference path="../typings/tsd.d.ts" />
+
 window.$ = require('jquery');
 
 'use strict';
