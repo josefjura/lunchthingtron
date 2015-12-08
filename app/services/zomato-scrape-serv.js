@@ -7,18 +7,22 @@ angular.module('app')
 		this.readUrlAsync = function (id, url) {
 			var result = {};
 			var deffered = $q.defer();
-			$http.get(url + '/menu#daily')
+
+			var searchIndex = url.indexOf('?');
+			var dailyMenuUrl = url.splice(searchIndex, 0, "/menu#daily");
+
+			$http.get(dailyMenuUrl)
 				.then(function (response) {
 					var parseRes = parseResponse(id, response.data, true);
 					result = { success: true, result: parseRes };
-					 deffered.resolve(result);
+					deffered.resolve(result);
 				},
 					function (error) {
 						$log.log(error);
 						result = { success: false, error: error };
 						deffered.resolve(result);
 					});
-					
+
 			return deffered.promise;
 		};
 
@@ -28,13 +32,13 @@ angular.module('app')
 			$http.get(url)
 				.then(function (response) {
 					var searchRes = parseSearch(response.data);
-					deffered.resolve({ success: true, result: searchRes });					
+					deffered.resolve({ success: true, result: searchRes });
 				},
 					function (error) {
 						$log.log(error);
 						deffered.resolve({ success: false, error: error });
 					});
-					
+
 			return deffered.promise;
 		};
 

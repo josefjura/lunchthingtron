@@ -1,6 +1,6 @@
 'use strict';
 angular.module('app')
-	.controller('RestaurantsAddCtrl', function ($log, $mdDialog, UserConfig, Zomato) {
+	.controller('RestaurantsAddCtrl', function ($log, $mdDialog, UserConfig, ZomatoAPI) {
 		var self = this;
 		this.searchTerm = '';
 		this.results = [];
@@ -8,8 +8,9 @@ angular.module('app')
 		$log.log('Hello from your Controller: RestaurantsAddCtrl in module main:. This is your controller:', this);
 
 		this.search = function () {
+			self.results = [];
 			this.isSearching = true;
-			Zomato.searchAsync(self.searchTerm)
+			ZomatoAPI.searchAsync(self.searchTerm)
 				.then(function (response) {
 					self.isSearching = false;
 					if (response.success) {
@@ -20,8 +21,8 @@ angular.module('app')
 						$log.log(response.error);
 					}
 				},
-					function (response) {
-						$log.log(response.error);
+					function (error) {
+						$log.log(error.error);
 					});
 		};
 

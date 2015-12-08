@@ -47,3 +47,8 @@ angular.module("app", [
         }
       });
   });
+
+angular.module("app").run(function ($http) {
+  $http.defaults.headers.common.user_key = '7801edd0712e8d74b9947053e48a9f1a';
+  $http.defaults.headers.common.Accept = "application/json";
+});

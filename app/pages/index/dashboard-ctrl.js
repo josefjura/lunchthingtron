@@ -3,7 +3,7 @@
 (function () {
     "use strict";
     angular.module("app")
-        .controller("DashboardCtrl", function DashboardCtrl($q, $log, $location, Zomato, UserConfig) {
+        .controller("DashboardCtrl", function DashboardCtrl($q, $log, $location, ZomatoAPI, UserConfig) {
             var self = this;
             self.title = getDate();
 
@@ -14,7 +14,7 @@
                 self.restaurants = [];
                 for (var i = 0; i < self.config.length; i++) {
                     var item = self.config[i];
-                    Zomato.readUrlAsync(item.id, item.url)
+                    ZomatoAPI.readUrlAsync(item.id, item.url)
                         .then(
                             function (result) {
                                 var that = result.result;
