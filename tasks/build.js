@@ -23,9 +23,9 @@ var paths = {
         './node_modules/**',
         './vendor/**',
         './**/*.html',
-        // './pages/**/*.js',
-        // './classes/**/*.js',
-        // './services/**/*.js',
+    // './pages/**/*.js',
+    // './classes/**/*.js',
+    // './services/**/*.js',
         './img/**/*'
     ],
     controllers: './build/pages/**/*-ctrl.js',
@@ -37,7 +37,7 @@ var paths = {
 // Tasks
 // -------------------------------------
 
-gulp.task('inject', ['clean', 'compile'], function () {
+gulp.task('inject', ['clean', 'compile', 'copy'], function () {
     return gulp.src('./build/app.html')
         .pipe(inject(
             gulp.src(paths.controllers,
@@ -63,7 +63,7 @@ var copyTask = function () {
         matching: paths.copyFromAppDir
     });
 };
-gulp.task('copy', ['clean', 'inject'], copyTask);
+gulp.task('copy', ['clean'], copyTask);
 gulp.task('copy-watch', copyTask);
 
 
@@ -95,8 +95,8 @@ var bundle = function (src, dest) {
 
 gulp.task('compile', ['clean'], function () {
     gulp.src(['./app/**/*.ts', '!./**/*.d.ts'])
-    .pipe(tsc())
-    .pipe(gulp.dest('./build'));
+        .pipe(tsc())
+        .pipe(gulp.dest('./build'));
 })
 
 
@@ -130,13 +130,13 @@ gulp.task('finalize', ['clean'], function () {
 });
 
 gulp.task('setKey', ['finalize', 'copy'], function () {
-    
+
     var apiKey = projectDir.read('config/apiKey.json', 'json');
     if (apiKey == null) { throw new gulpUtil.PluginError('setKey', 'Value for apiKey is not set in ./config/apiKey.json, communication with Zomato will not work properly'); }
-    
+
     gulp.src(['./build/app.js'])
         .pipe(replace(/##API_KEY##/, apiKey.key))
-        .pipe(gulp.dest('./build'));  
+        .pipe(gulp.dest('./build'));
 })
 
 gulp.task('watch', function () {
@@ -146,4 +146,4 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build', [ 'less', 'copy', 'finalize', 'inject', 'setKey', 'compile']);
+gulp.task('build', ['less', 'copy', 'finalize', 'inject', 'setKey', 'compile']);
