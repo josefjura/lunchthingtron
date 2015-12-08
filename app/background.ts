@@ -1,7 +1,7 @@
 /// <reference path="typings/tsd.d.ts" />
 
 var app = require('app');  // Module to control application life.
-var process = require('process');  // Module to control application life.
+var process:NodeJS.Process = require('process');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var ipc = require('ipc');
 var fs = require('fs');

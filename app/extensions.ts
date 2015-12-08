@@ -1,5 +1,9 @@
 /// <reference path="typings/tsd.d.ts" />
 
-String.prototype.splice = function(idx, rem, str) {
+interface String {
+    splice(idx:number, rem:number, str:string): string;
+}
+
+String.prototype.splice = function(idx:number, rem:number, str:string):string {
     return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
 };

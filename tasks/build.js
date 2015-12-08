@@ -92,31 +92,6 @@ var bundle = function (src, dest) {
     return deferred.promise;
 };
 
-var bundleApplication = function () {
-    return Q.all([
-        bundle(destDir.path('background.js'), destDir.path('background.js')),
-        bundle(destDir.path('app.js'), destDir.path('app.js')),
-        bundle(destDir.path('extensions.js'), destDir.path('extensions.js')),
-    ]);
-};
-
-var bundleSpecs = function () {
-    generateSpecsImportFile().then(function (specEntryPointPath) {
-        return Q.all([
-            bundle(srcDir.path('background.js'), destDir.path('background.js')),
-            bundle(specEntryPointPath, destDir.path('spec.js')),
-        ]);
-    });
-};
-
-var bundleTask = function () {
-    if (utils.getEnvName() === 'test') {
-        return bundleSpecs();
-    }
-    return bundleApplication();
-};
-gulp.task('bundle', ['compile','clean'], bundleTask);
-gulp.task('bundle-watch', bundleTask);
 
 gulp.task('compile', ['clean'], function () {
     gulp.src(['./app/**/*.ts', '!./**/*.d.ts'])
@@ -154,7 +129,7 @@ gulp.task('finalize', ['clean'], function () {
     destDir.copy(configFilePath, 'env_config.json');
 });
 
-gulp.task('setKey', ['finalize', 'bundle', 'copy'], function () {
+gulp.task('setKey', ['finalize', 'copy'], function () {
     
     var apiKey = projectDir.read('config/apiKey.json', 'json');
     if (apiKey == null) { throw new gulpUtil.PluginError('setKey', 'Value for apiKey is not set in ./config/apiKey.json, communication with Zomato will not work properly'); }
@@ -171,4 +146,4 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build', ['bundle', 'less', 'copy', 'finalize', 'inject', 'setKey']);
+gulp.task('build', [ 'less', 'copy', 'finalize', 'inject', 'setKey', 'compile']);
