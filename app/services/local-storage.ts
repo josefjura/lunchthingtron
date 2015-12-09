@@ -3,19 +3,19 @@
 'use strict';
 module services {
   export class Storage implements ng.IDirective {
-    window: any;
+    window: ng.IWindowService;
     static $inject = ['$window'];
-    constructor(window: any) {
+    constructor(window: ng.IWindowService) {
       this.window = window;
     }
 
-    set(key, value) {
+    set(key, value):void {
       window.localStorage[key] = value;
     };
     get(key, defaultValue) {
       return window.localStorage[key] || defaultValue;
     };
-    setObject(key, value) {
+    setObject(key, value):void {
       window.localStorage[key] = JSON.stringify(value);
     };
     getObject(key) {

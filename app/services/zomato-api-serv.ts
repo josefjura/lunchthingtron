@@ -5,12 +5,12 @@
 module services {
 	export class ZomatoAPI {
 
-		$q: any;
+		$q: ng.IQService;
 		logger: ng.ILogService;
-		$http: any;
+		$http: ng.IHttpService;
 
 		static $inject = ['$q', '$log', '$http'];
-		constructor($q, logger: ng.ILogService, $http) {
+		constructor($q:ng.IQService, logger: ng.ILogService, $http: ng.IHttpService) {
 			this.$q = $q;
 			this.logger = logger;
 			this.$http = $http;
