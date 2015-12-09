@@ -1,47 +1,52 @@
 ﻿/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../../services/zomato-api-serv.ts" />
 
-var ipc = require('ipc');
+module controllers {
+    export class DashboardCtrl {
+        title: string;
+        config: Array<any>;
+        restaurants: Array<any>;
+        zomato: services.ZomatoAPI;
+        logger: ng.ILogService;
 
-(function () {
-    "use strict";
-    angular.module("app")
-        .controller("DashboardCtrl", function DashboardCtrl($q, $log, $location, ZomatoAPI, UserConfig) {
-            var self = this;
-            self.title = getDate();
+        static $inject = ['$q', '$log', 'ZomatoAPI', 'UserConfig'];
+        constructor($q, $log, ZomatoAPI, UserConfig) {
+            this.title = this.getDate();
+            this.config = UserConfig.getRestaurantList();
+            this.logger = $log;
+            this.zomato = ZomatoAPI;
+            this.loadRestaurants();
+        }
 
-            var refresh = $location.search().refresh == "true";
-            self.config = UserConfig.getRestaurantList();
-
-            self.loadRestaurants = function (force) {
-                self.restaurants = [];
-                for (var i = 0; i < self.config.length; i++) {
-                    var item = self.config[i];
-                    ZomatoAPI.readUrlAsync(item.id, item.url)
-                        .then(
-                            function (result) {
-                                var that = result.result;
-                                that.isLoaded = true;
-                                self.restaurants.push(that);
-                            },
-                            function (result) {
-                                $log.log(result.error);
-                            }
-                            );
-                }
+        loadRestaurants() {
+            this.restaurants = [];
+            for (var i = 0; i < this.config.length; i++) {
+                var item = this.config[i];
+                this.zomato.readUrlAsync(item.id, item.url)
+                    .then(
+                    (result) => {
+                        var that = result.result;
+                        that.isLoaded = true;
+                        this.restaurants.push(that);
+                    },
+                    (result) => {
+                        this.logger.log(result.error);
+                    }
+                    );
             }
+        };
 
-            self.loadRestaurants(refresh);
-        });
+//TODO: Move to utility class
+        private getDate() {
+            var date = new Date();
+            var day = date.getDate();
+            var monthIndex = date.getMonth();
+            var year = date.getFullYear();
 
+            return day + "." + monthIndex + "." + year;
+        };
 
-
-    function getDate() {
-        var date = new Date();
-        var day = date.getDate();
-        var monthIndex = date.getMonth();
-        var year = date.getFullYear();
-
-        return day + "." + monthIndex + "." + year;
     }
-
-})();
+    
+    angular.module('app').controller('DashboardCtrl', controllers.DashboardCtrl);
+}
