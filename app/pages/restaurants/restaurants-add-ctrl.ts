@@ -1,60 +1,70 @@
 /// <reference path="../../typings/tsd.d.ts" />
-
+/// <reference path="../../services/user-config.ts" />
+/// <reference path="../../services/zomato-api-serv.ts" />
 'use strict';
-angular.module('app')
-	.controller('RestaurantsAddCtrl', function ($log, $mdDialog, UserConfig, ZomatoAPI) {
-		var self = this;
-		this.searchTerm = '';
-		this.results = [];
-		this.isSearching = false;
-		$log.log('Hello from your Controller: RestaurantsAddCtrl in module main:. This is your controller:', this);
-
-		this.search = function () {
-			self.results = [];
+module controllers {
+	export class RestaurantsAddCtrl {
+		searchTerm: string = '';
+		results: Array<any> = [];
+		isSearching: boolean = false;
+		dialogService: ng.material.IDialogService;
+		userConfig: services.UserConfig;
+		zomato: services.ZomatoAPI;
+		logger: ng.ILogService;
+		
+		static $inject = ['$log', '$mdDialog', 'UserConfig', 'ZomatoAPI'];
+		constructor(logger: ng.ILogService, $mdDialog, UserConfig, ZomatoAPI) {
+			this.dialogService = $mdDialog;
+			this.userConfig = UserConfig;
+			this.logger = logger;
+			this.zomato = ZomatoAPI;
+		}
+		search() {
+			this.results = [];
 			this.isSearching = true;
-			ZomatoAPI.searchAsync(self.searchTerm)
-				.then(function (response) {
-					self.isSearching = false;
+			this.zomato.searchAsync(this.searchTerm)
+				.then((response) => {
+					this.isSearching = false;
 					if (response.success) {
-						self.results = markExisting(response.result);
-						self.searchTerm = '';
+						this.results = this.markExisting(response.result);
+						this.searchTerm = '';
 					}
 					else {
-						$log.log(response.error);
+						this.logger.log(response.error);
 					}
 				},
-					function (error) {
-						$log.log(error.error);
-					});
+				(error) => {
+					this.logger.log(error.error);
+				});
 		};
 
-		this.hide = function () {
-			$mdDialog.hide();
+		hide() {
+			this.dialogService.hide();
 		}
 
-		this.stateChange = function (rest) {
+		stateChange(rest) {
 			if (rest.added) {
-				UserConfig.addRestaurant(rest);
+				this.userConfig.addRestaurant(rest);
 			}
 			else {
-				UserConfig.removeRestaurant(rest);
+				this.userConfig.removeRestaurant(rest);
 			}
 		}
 
-		this.add = function (item) {
+		add(item) {
 			if (!item.added) {
-				UserConfig.addRestaurant(item);
+				this.userConfig.addRestaurant(item);
 				item.added = true;
 			}
 		};
 
-		this.remove = function (item) {
-			UserConfig.removeRestaurant(item);
+		remove(item) {
+			this.userConfig.removeRestaurant(item);
 			item.added = false;
 		};
 
-		function markExisting(results) {
-			var rests = UserConfig.getRestaurantList();
+		markExisting(results) {
+			var rests = this.userConfig.getRestaurantList();
 			for (var i in results) {
 				if (results.hasOwnProperty(i)) {
 					for (var ii in rests) {
@@ -69,4 +79,8 @@ angular.module('app')
 
 			return results;
 		}
-	});
+
+	}
+}
+
+angular.module('app').controller('RestaurantsAddCtrl', controllers.RestaurantsAddCtrl);
