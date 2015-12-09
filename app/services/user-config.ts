@@ -1,43 +1,57 @@
 /// <reference path="../typings/tsd.d.ts" />
+/// <reference path="local-storage.ts" />
 'use strict';
 
-angular.module('app')
-  .service('UserConfig', function ($log, $storage) {
-    var self = this;
+module services {
 
-    this.getRestaurantList = function () {
-      var config = $storage.getObject('config');
+  export class UserConfig {
+
+    logger: ng.ILogService;
+    storage: services.Storage;
+    restaurants: any;
+    
+    static $inject = ['$log', 'Storage'];
+    constructor(log: ng.ILogService, storage: services.Storage) {
+      this.logger = log;
+      this.storage = storage;
+    }
+
+    getRestaurantList() {
+      var config = this.storage.getObject('config');
       if (config.restaurants) {
-        $log.log('Loaded configuration. Length: ' + config.restaurants.length);
+        this.logger.log('Loaded configuration. Length: ' + config.restaurants.length);
       }
       else {
-        $log.log('Creating new configuration');
+        this.logger.log('Creating new configuration');
         this.restaurants = [];
         config.restaurants = this.restaurants;
-        $storage.setObject('config', config);
+        this.storage.setObject('config', config);
       }
       return config.restaurants;
     };
 
-    this.setRestaurantList = function (restaurants) {
-      var config = $storage.getObject('config');
+    setRestaurantList(restaurants) {
+      var config = this.storage.getObject('config');
       if (restaurants !== null) {
         config.restaurants = restaurants;
-        $storage.setObject('config', config);
+        this.storage.setObject('config', config);
       }
       return config.restaurants;
     };
 
-    this.addRestaurant = function (restaurant) {
-      var list = self.getRestaurantList();
+    addRestaurant(restaurant) {
+      var list = this.getRestaurantList();
       list.push(restaurant);
-      self.setRestaurantList(list);
-    }
+      this.setRestaurantList(list);
+    };
 
-    this.removeRestaurant = function (restaurant) {
-      var list = self.getRestaurantList();
+    removeRestaurant(restaurant) {
+      var list = this.getRestaurantList();
       var index = list.indexOf(restaurant);
-      list.splice(index,1);
-      self.setRestaurantList(list);
-    }
-  });
+      list.splice(index, 1);
+      this.setRestaurantList(list);
+    };
+  }
+
+  angular.module('app').service('UserConfig', services.UserConfig);
+}

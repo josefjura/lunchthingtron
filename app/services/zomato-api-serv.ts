@@ -1,39 +1,55 @@
 /// <reference path="../typings/tsd.d.ts" />
-window.$ = require('jquery');
-
+/// <reference path="zomato-scrape-serv.ts" />
 'use strict';
-angular.module('app')
-	.service('ZomatoAPI', function ($q, $log, $http, ZomatoScrape) {
-		this.readUrlAsync = function (id, url) {
-			return ZomatoScrape.readUrlAsync(id, url);
+
+module services {
+	export class ZomatoAPI {
+
+		$q: any;
+		logger: ng.ILogService;
+		$http: any;
+
+		static $inject = ['$q', '$log', '$http'];
+		constructor($q, logger: ng.ILogService, $http) {
+			this.$q = $q;
+			this.logger = logger;
+			this.$http = $http;
+		}
+		///TODO: Fix the inheritance !
+		readUrlAsync(id, url) {
+			return new ZomatoScrape(this.$q, this.logger, this.$http).readUrlAsync(id, url);
 		};
 
-		this.searchAsync = function (searchTerm) {					
-			var deffered = $q.defer();
-			$http.get(
+		searchAsync(searchTerm) {
+			var deffered = this.$q.defer();
+			this.$http.get(
 				'https://developers.zomato.com/api/v2.1/search?entity_id=84&entity_type=city&q=' + encodeURI(searchTerm),
 				{
 
-				}).then(function (response) {
+				}).then((response) => {
 					deffered.resolve({ success: true, result: createResponse(response.data.restaurants) });
-				}, function (error) {
+				}, (error) => {
 					deffered.resolve({ success: false, error: error });
 				});
 
-				function createResponse(restaurants){
-					var rests = [];
-					
-					for (var rest in restaurants) {
-						if (restaurants.hasOwnProperty(rest)) {
-							var element = restaurants[rest].restaurant;
-							rests.push({name:element.name, url: decodeURI(element.url), id: element.id, avatar: element.thumb});
-						}
+			function createResponse(restaurants) {
+				var rests = [];
+
+				for (var rest in restaurants) {
+					if (restaurants.hasOwnProperty(rest)) {
+						var element = restaurants[rest].restaurant;
+						rests.push({ name: element.name, url: decodeURI(element.url), id: element.id, avatar: element.thumb });
 					}
-					
-					return rests;
 				}
+
+				return rests;
+			}
 
 			return deffered.promise;
 		};
+	}
 
-	});
+
+}
+
+angular.module('app').service('ZomatoAPI', services.ZomatoAPI);

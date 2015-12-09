@@ -1,49 +1,60 @@
 /// <reference path="../typings/tsd.d.ts" />
-
+'use strict';
 window.$ = require('jquery');
 
-'use strict';
-angular.module('app')
-	.service('ZomatoScrape', function ($q, $log, $http) {
-		this.readUrlAsync = function (id, url) {
+module services {
+	export class ZomatoScrape {
+
+		$q: any;
+		logger: ng.ILogService;
+		$http: any;
+
+		static $inject = ['$q', '$log', '$http'];
+		constructor($q, logger: ng.ILogService, $http) {
+			this.$q = $q;
+			this.logger = logger;
+			this.$http = $http;
+		}
+
+		readUrlAsync(id, url) {
 			var result = {};
-			var deffered = $q.defer();
+			var deffered = this.$q.defer();
 
 			var searchIndex = url.indexOf('?');
 			var dailyMenuUrl = url.splice(searchIndex, 0, "/menu#daily");
 
-			$http.get(dailyMenuUrl)
-				.then(function (response) {
-					var parseRes = parseResponse(id, response.data, true);
+			this.$http.get(dailyMenuUrl)
+				.then((response) => {
+					var parseRes = this.parseResponse(id, response.data, true);
 					result = { success: true, result: parseRes };
 					deffered.resolve(result);
 				},
-					function (error) {
-						$log.log(error);
-						result = { success: false, error: error };
-						deffered.resolve(result);
-					});
+				(error) => {
+					this.logger.log(error);
+					result = { success: false, error: error };
+					deffered.resolve(result);
+				});
 
 			return deffered.promise;
 		};
 
-		this.searchAsync = function (searchTerm) {
-			var deffered = $q.defer();
+		searchAsync(searchTerm) {
+			var deffered = this.$q.defer();
 			var url = 'https://www.zomato.com/cs/praha/restaurace?q=' + encodeURIComponent(searchTerm);
-			$http.get(url)
-				.then(function (response) {
-					var searchRes = parseSearch(response.data);
+			this.$http.get(url)
+				.then((response) => {
+					var searchRes = this.parseSearch(response.data);
 					deffered.resolve({ success: true, result: searchRes });
 				},
-					function (error) {
-						$log.log(error);
-						deffered.resolve({ success: false, error: error });
-					});
+				(error) => {
+					this.logger.log(error);
+					deffered.resolve({ success: false, error: error });
+				});
 
 			return deffered.promise;
 		};
 
-		function parseResponse(id, data, parseItems) {
+		private parseResponse(id, data, parseItems) {
 			if (parseItems === undefined || parseItems === null) {
 				parseItems = false;
 			}
@@ -55,7 +66,7 @@ angular.module('app')
 			if (today && parseItems) {
 				var itemselms = $(today).find('.tmi-daily');
 				if (itemselms.length) {
-					$.each(itemselms, function (index, item) {
+					$.each(itemselms, (index, item) => {
 						var text = $(item).find('.tmi-text-group').text().trim();
 						var price = $(item).find('.tmi-price').text().trim();
 
@@ -70,7 +81,7 @@ angular.module('app')
 			return { id: id, name: name, menu: items };
 		}
 
-		function parseSearch(data) {
+		private parseSearch(data) {
 			var searchResults = $(data).find('a.result-title');
 			var toReturn = [];
 			for (var i in searchResults) {
@@ -87,4 +98,9 @@ angular.module('app')
 
 			return toReturn;
 		}
-	});
+	}
+
+
+}
+
+angular.module('app').service('ZomatoScrape', services.ZomatoScrape);
