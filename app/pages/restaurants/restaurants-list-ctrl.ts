@@ -1,40 +1,51 @@
 /// <reference path="../../typings/tsd.d.ts" />
-
+/// <reference path="../../services/user-config.ts" />
 'use strict';
-angular.module('app')
-  .controller('RestaurantsListCtrl', function ($log, $state, $scope, $mdDialog, UserConfig) {
-    var self = this;
-    $log.log('Hello from your Controller: RestaurantsCtrl in module main:. This is your controller:', this);
+module controllers {
 
-    self.refresh = function () {
-      self.restaurants = UserConfig.getRestaurantList();
-    }
+  export class RestaurantsListCtrl {
+    dialogService: ng.material.IDialogService;
+    userConfig: services.UserConfig;
+    stateService: any;
+    restaurants: any;
 
-    self.openAdd = function (event) {
-      $mdDialog.show({
+    static $inject = ['$log', '$state', '$scope', '$mdDialog', 'UserConfig'];
+    constructor($log: ng.ILogService, $state, $scope: ng.IScope, $mdDialog: ng.material.IDialogService, UserConfig: services.UserConfig) {
+      var self = this;
+      $log.log('Hello from your Controller: RestaurantsCtrl in module main:. This is your controller:', this);
+      this.dialogService = $mdDialog;
+      this.userConfig = UserConfig;
+      this.stateService = $state;
+      this.refresh();
+    };
+    refresh() {
+      this.restaurants = this.userConfig.getRestaurantList();
+    };
+
+    openAdd(event) {
+      this.dialogService.show({
         controller: 'RestaurantsAddCtrl as _ctrl',
         templateUrl: './pages/restaurants/restaurants-add.html',
         parent: angular.element(document.body),
         targetEvent: event,
-        clickOutsideToClose: true,
-        autoWrap: true
-      }).then(function () {
-        self.refresh();
+        clickOutsideToClose: true
+      }).then(() => {
+        this.refresh();
       });
-    }
+    };
 
-    self.removeRestaurant = function (rest) {
-      var ind = self.restaurants.indexOf(rest);
+    removeRestaurant(rest) {
+      var ind = this.restaurants.indexOf(rest);
       if (ind > -1) {
-        self.restaurants.splice(ind, 1);
-        UserConfig.removeRestaurant(rest);
+        this.restaurants.splice(ind, 1);
+        this.userConfig.removeRestaurant(rest);
       }
-    }
+    };
 
-    self.openRestaurant = function (rest) {
-      $state.go('main.webview', {url: rest.url});
-    }
+    openRestaurant(rest) {
+      this.stateService.go('main.webview', { url: rest.url });
+    };
+  }
+}
 
-    self.refresh();
-
-  });
+angular.module('app').controller('RestaurantsListCtrl', controllers.RestaurantsListCtrl);
