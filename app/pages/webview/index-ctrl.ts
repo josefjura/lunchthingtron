@@ -1,11 +1,15 @@
 /// <reference path="../../typings/tsd.d.ts" />
-
 'use strict';
-angular.module('app')
-  .controller('WebViewCtrl', function($log, $scope, $sce, $stateParams, $mdDialog, UserConfig) {
-    var self = this;
-    $log.log('Hello from your Controller: WebViewCtrl in module main:. This is your controller:', this);
 
-    self.url = $sce.trustAsResourceUrl(decodeURIComponent($stateParams.url));
+module controllers {
+  export class WebViewCtrl {
+    url: string;
 
-  });
+    static $inject = ['$log', '$scope', '$sce', '$stateParams'];
+    constructor($log, $scope, $sce, $stateParams) {
+      this.url = $sce.trustAsResourceUrl(decodeURIComponent($stateParams.url));
+    }
+  }
+
+  angular.module('app').controller('WebViewCtrl', controllers.WebViewCtrl);
+}
