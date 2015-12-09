@@ -67,38 +67,14 @@ gulp.task('copy', ['clean'], copyTask);
 gulp.task('copy-watch', copyTask);
 
 
-var bundle = function (src, dest) {
-    var deferred = Q.defer();
-
-    rollup.rollup({
-        entry: src
-    }).then(function (bundle) {
-        var jsFile = pathUtil.basename(dest);
-        var result = bundle.generate({
-            format: 'iife',
-            sourceMap: true,
-            sourceMapFile: jsFile,
-        });
-        return Q.all([
-            destDir.writeAsync(dest, result.code + '\n//# sourceMappingURL=' + jsFile + '.map'),
-            destDir.writeAsync(dest + '.map', result.map.toString()),
-        ]);
-    }).then(function () {
-        deferred.resolve();
-    }).catch(function (err) {
-        console.error(err);
-    });
-
-    return deferred.promise;
-};
-
-
-gulp.task('compile', ['clean'], function () {
-    gulp.src(['./app/**/*.ts', '!./**/*.d.ts'])
+var compileTask = function () {
+    return gulp.src(['./app/**/*.ts', '!./**/*.d.ts'])
         .pipe(tsc())
         .pipe(gulp.dest('./build'));
-})
+};
 
+gulp.task('compile', ['clean'], compileTask);
+gulp.task('compile-watch', compileTask);
 
 var lessTask = function () {
     return gulp.src('app/stylesheets/main.less')
@@ -140,7 +116,7 @@ gulp.task('setKey', ['finalize', 'copy'], function () {
 })
 
 gulp.task('watch', function () {
-    gulp.watch('app/**/*.js', ['bundle-watch']);
+    gulp.watch('app/**/*.ts', ['compile-watch']);
     gulp.watch(paths.copyFromAppDir, { cwd: 'app' }, ['copy-watch']);
     gulp.watch('app/**/*.less', ['less-watch']);
 });
