@@ -1,4 +1,5 @@
 ﻿/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../../services/user-config.ts" />
 /// <reference path="../../services/zomato-api-serv.ts" />
 
 module controllers {
@@ -10,7 +11,7 @@ module controllers {
         logger: ng.ILogService;
 
         static $inject = ['$q', '$log', 'ZomatoAPI', 'UserConfig'];
-        constructor($q, $log, ZomatoAPI, UserConfig) {
+        constructor($q: ng.IQService, $log: ng.ILogService, ZomatoAPI: services.ZomatoAPI, UserConfig: services.UserConfig) {
             this.title = this.getDate();
             this.config = UserConfig.getRestaurantList();
             this.logger = $log;
@@ -36,7 +37,7 @@ module controllers {
             }
         };
 
-//TODO: Move to utility class
+        //TODO: Move to utility class
         private getDate() {
             var date = new Date();
             var day = date.getDate();
@@ -47,6 +48,6 @@ module controllers {
         };
 
     }
-    
+
     angular.module('app').controller('DashboardCtrl', controllers.DashboardCtrl);
 }

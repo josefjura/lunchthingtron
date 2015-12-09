@@ -3,6 +3,7 @@
 /// <reference path="../../services/zomato-api-serv.ts" />
 'use strict';
 module controllers {
+
 	export class RestaurantsAddCtrl {
 		searchTerm: string = '';
 		results: Array<any> = [];
@@ -11,9 +12,11 @@ module controllers {
 		userConfig: services.UserConfig;
 		zomato: services.ZomatoAPI;
 		logger: ng.ILogService;
-		
+
+
+
 		static $inject = ['$log', '$mdDialog', 'UserConfig', 'ZomatoAPI'];
-		constructor(logger: ng.ILogService, $mdDialog, UserConfig, ZomatoAPI) {
+		constructor(logger: ng.ILogService, $mdDialog: ng.material.IDialogService, UserConfig: services.UserConfig, ZomatoAPI: services.ZomatoAPI) {
 			this.dialogService = $mdDialog;
 			this.userConfig = UserConfig;
 			this.logger = logger;

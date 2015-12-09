@@ -6,7 +6,7 @@ module controllers {
     url: string;
 
     static $inject = ['$log', '$scope', '$sce', '$stateParams'];
-    constructor($log, $scope, $sce, $stateParams) {
+    constructor($log: ng.ILogService, $scope: ng.IScope, $sce, $stateParams) {
       this.url = $sce.trustAsResourceUrl(decodeURIComponent($stateParams.url));
     }
   }
