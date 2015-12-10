@@ -49,6 +49,7 @@ module controllers {
 		}
 
 		stateChange(rest) {
+			this.changed = true;
 			if (rest.added) {
 				this.userConfig.addRestaurant(rest);
 			}
@@ -56,20 +57,6 @@ module controllers {
 				this.userConfig.removeRestaurant(rest);
 			}
 		}
-
-		add(item) {
-			if (!item.added) {
-				this.changed = true;
-				this.userConfig.addRestaurant(item);
-				item.added = true;
-			}
-		};
-
-		remove(item) {
-			this.changed = true;
-			this.userConfig.removeRestaurant(item);
-			item.added = false;
-		};
 
 		markExisting(results) {
 			var rests = this.userConfig.getRestaurantList();
