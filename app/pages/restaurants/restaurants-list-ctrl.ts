@@ -8,6 +8,7 @@ module controllers {
     userConfig: services.UserConfig;
     stateService: any;
     restaurants: any;
+    changed: boolean;
 
     static $inject = ['$log', '$state', '$scope', '$mdDialog', 'UserConfig'];
     constructor($log: ng.ILogService, $state, $scope: ng.IScope, $mdDialog: ng.material.IDialogService, UserConfig: services.UserConfig) {
@@ -16,11 +17,17 @@ module controllers {
       this.dialogService = $mdDialog;
       this.userConfig = UserConfig;
       this.stateService = $state;
+      this.changed = false;
       this.refresh();
     };
+
     refresh() {
       this.restaurants = this.userConfig.getRestaurantList();
     };
+
+    backToDashboard() {
+      this.stateService.go('main.dashboard', { refresh: this.changed });
+    }
 
     openAdd(event) {
       this.dialogService.show({
@@ -35,6 +42,7 @@ module controllers {
     };
 
     removeRestaurant(rest) {
+      this.changed = true;
       var ind = this.restaurants.indexOf(rest);
       if (ind > -1) {
         this.restaurants.splice(ind, 1);
