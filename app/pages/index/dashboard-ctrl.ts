@@ -15,12 +15,14 @@ module controllers {
             this.logger = $log;
             this.zomato = ZomatoAPI;
 
-            $log.log($stateParams.refresh);
+            var refresh = ($stateParams.refresh);
 
-            this.loadRestaurants();
+            this.loadRestaurants(refresh);
         }
 
-        loadRestaurants(): void {
+        loadRestaurants(force: boolean): void {
+            if (!force && this.restaurants != null) return;
+
             this.restaurants = new Array<model.Restaurant>();
             for (var i = 0; i < this.config.length; i++) {
                 var item = this.config[i];
