@@ -16,8 +16,8 @@ module services {
 			this.$http = $http;
 		}
 		///TODO: Fix the inheritance !
-		loadMenu(rest: model.RestaurantConfig): ng.IPromise<responses.ServiceResponse> {
-			return new services.ZomatoScrape(this.$q, this.logger, this.$http).loadMenu(rest);
+		loadMenu(rest: model.RestaurantConfig, cache: boolean): ng.IPromise<responses.ServiceResponse> {
+			return new services.ZomatoScrape(this.$q, this.logger, this.$http).loadMenu(rest, cache);
 		};
 
 		searchAsync(searchTerm: string): ng.IPromise<responses.ServiceResponse> {
