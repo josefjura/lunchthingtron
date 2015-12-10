@@ -31,7 +31,7 @@ module controllers {
             else if (emptyData)
                 this.logger.log("Empty source data, reloading.");
             else if (desynced)
-                this.logger.log("Desynced data, reloading");
+                this.logger.log("Desynced data, reloading cached");
 
 
             this.restaurants = new Array<model.Restaurant>();
