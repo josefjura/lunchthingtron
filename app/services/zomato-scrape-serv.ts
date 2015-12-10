@@ -23,13 +23,13 @@ module services {
 			var searchIndex = rest.url.indexOf('?');
 			var dailyMenuUrl = rest.url.splice(searchIndex, 0, "/menu#daily");
 
-			this.$http.get(dailyMenuUrl)
+			this.$http.get(dailyMenuUrl, { cache: true })
 				.then((response) => {
 					var parseRes = this.parseMenu(rest, response.data, true);
 					deffered.resolve(new responses.Ok(parseRes));
 				},
 				(error) => {
-					this.logger.log(error);					
+					this.logger.log(error);
 					deffered.resolve(new responses.Error(error));
 				});
 
@@ -56,8 +56,8 @@ module services {
 			var name = $(data).find('.res-name a span').text();
 			var container = $(data).find('#daily-menu-container');
 			var today = $(container).find('.tmi-group')[0];
-			
-			var toReturn = new model.Restaurant(rest);			
+
+			var toReturn = new model.Restaurant(rest);
 
 			if (today) {
 				var itemselms = $(today).find('.tmi-daily');
