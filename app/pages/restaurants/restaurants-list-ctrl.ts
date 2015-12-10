@@ -36,8 +36,11 @@ module controllers {
         parent: angular.element(document.body),
         targetEvent: event,
         clickOutsideToClose: true
-      }).then(() => {
-        this.refresh();
+      }).then((changed) => {
+        if (changed) {
+          this.changed = true;
+          this.refresh();
+        }
       });
     };
 
