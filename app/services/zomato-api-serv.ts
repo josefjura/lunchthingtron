@@ -1,52 +1,51 @@
 /// <reference path="../typings/tsd.d.ts" />
-/// <reference path="zomato-scrape-serv.ts" />
+
 'use strict';
 
 module services {
-	export class ZomatoAPI {
+	export class ZomatoAPI implements IZomatoService {
 
 		$q: ng.IQService;
 		logger: ng.ILogService;
 		$http: ng.IHttpService;
 
 		static $inject = ['$q', '$log', '$http'];
-		constructor($q:ng.IQService, logger: ng.ILogService, $http: ng.IHttpService) {
+		constructor($q: ng.IQService, logger: ng.ILogService, $http: ng.IHttpService) {
 			this.$q = $q;
 			this.logger = logger;
 			this.$http = $http;
 		}
 		///TODO: Fix the inheritance !
-		readUrlAsync(id, url) {
-			return new ZomatoScrape(this.$q, this.logger, this.$http).readUrlAsync(id, url);
+		loadMenu(rest: model.RestaurantConfig): ng.IPromise<responses.ServiceResponse> {
+			return new services.ZomatoScrape(this.$q, this.logger, this.$http).loadMenu(rest);
 		};
 
-		searchAsync(searchTerm) {
-			var deffered = this.$q.defer();
-			this.$http.get(
-				'https://developers.zomato.com/api/v2.1/search?entity_id=84&entity_type=city&q=' + encodeURI(searchTerm),
-				{
-
-				}).then((response) => {
-					deffered.resolve({ success: true, result: createResponse(response.data.restaurants) });
+		searchAsync(searchTerm: string): ng.IPromise<responses.ServiceResponse> {
+			var deffered = this.$q.defer<responses.ServiceResponse>();
+			this.$http.get<model.APISearchResponse>(
+				'https://developers.zomato.com/api/v2.1/search?entity_id=84&entity_type=city&q=' + encodeURI(searchTerm), {}).
+				then((response) => {
+					var parsed = this.createResponse(response.data.restaurants);
+					deffered.resolve(new responses.Ok(parsed));
 				}, (error) => {
-					deffered.resolve({ success: false, error: error });
+					deffered.resolve(new responses.Error(error));
 				});
-
-			function createResponse(restaurants) {
-				var rests = [];
-
-				for (var rest in restaurants) {
-					if (restaurants.hasOwnProperty(rest)) {
-						var element = restaurants[rest].restaurant;
-						rests.push({ name: element.name, url: decodeURI(element.url), id: element.id, avatar: element.thumb });
-					}
-				}
-
-				return rests;
-			}
 
 			return deffered.promise;
 		};
+
+		private createResponse(restaurants: model.RestaurantSourceEnvelope[]): model.RestaurantConfig[] {
+			var rests: model.RestaurantConfig[] = new Array<model.RestaurantConfig>();
+
+			for (var rest in restaurants) {
+				if (restaurants.hasOwnProperty(rest)) {
+					var element = restaurants[rest].restaurant;
+					rests.push(new model.RestaurantConfig(element.name, decodeURI(element.url), element.id.toString(), element.thumb));
+				}
+			}
+
+			return rests;
+		}
 	}
 
 

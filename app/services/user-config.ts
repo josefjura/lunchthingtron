@@ -1,5 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
-/// <reference path="local-storage.ts" />
+
 'use strict';
 
 module services {
@@ -8,29 +8,27 @@ module services {
 
     logger: ng.ILogService;
     storage: services.Storage;
-    restaurants: any;
-    
+
     static $inject = ['$log', 'Storage'];
     constructor(log: ng.ILogService, storage: services.Storage) {
       this.logger = log;
       this.storage = storage;
     }
 
-    getRestaurantList() {
+    getRestaurantList(): model.RestaurantConfig[] {
       var config = this.storage.getObject('config');
       if (config.restaurants) {
         this.logger.log('Loaded configuration. Length: ' + config.restaurants.length);
       }
       else {
         this.logger.log('Creating new configuration');
-        this.restaurants = [];
-        config.restaurants = this.restaurants;
+        config.restaurants = new Array<model.RestaurantConfig>();
         this.storage.setObject('config', config);
       }
       return config.restaurants;
     };
 
-    setRestaurantList(restaurants) {
+    setRestaurantList(restaurants: model.RestaurantConfig[]): model.RestaurantConfig[] {
       var config = this.storage.getObject('config');
       if (restaurants !== null) {
         config.restaurants = restaurants;
@@ -39,13 +37,13 @@ module services {
       return config.restaurants;
     };
 
-    addRestaurant(restaurant) {
+    addRestaurant(restaurant: model.RestaurantConfig): void {
       var list = this.getRestaurantList();
       list.push(restaurant);
       this.setRestaurantList(list);
     };
 
-    removeRestaurant(restaurant) {
+    removeRestaurant(restaurant: model.RestaurantConfig): void {
       var list = this.getRestaurantList();
       var index = list.indexOf(restaurant);
       list.splice(index, 1);

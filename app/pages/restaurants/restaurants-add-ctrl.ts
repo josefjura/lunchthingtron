@@ -10,18 +10,19 @@ module controllers {
 		isSearching: boolean = false;
 		dialogService: ng.material.IDialogService;
 		userConfig: services.UserConfig;
-		zomato: services.ZomatoAPI;
+		zomato: services.IZomatoService;
 		logger: ng.ILogService;
 
 
 
 		static $inject = ['$log', '$mdDialog', 'UserConfig', 'ZomatoAPI'];
-		constructor(logger: ng.ILogService, $mdDialog: ng.material.IDialogService, UserConfig: services.UserConfig, ZomatoAPI: services.ZomatoAPI) {
+		constructor(logger: ng.ILogService, $mdDialog: ng.material.IDialogService, UserConfig: services.UserConfig, ZomatoAPI: services.IZomatoService) {
 			this.dialogService = $mdDialog;
 			this.userConfig = UserConfig;
 			this.logger = logger;
 			this.zomato = ZomatoAPI;
 		}
+		
 		search() {
 			this.results = [];
 			this.isSearching = true;
@@ -29,7 +30,7 @@ module controllers {
 				.then((response) => {
 					this.isSearching = false;
 					if (response.success) {
-						this.results = this.markExisting(response.result);
+						this.results = this.markExisting(response.data);
 						this.searchTerm = '';
 					}
 					else {

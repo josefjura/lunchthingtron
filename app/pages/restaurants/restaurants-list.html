@@ -19,7 +19,7 @@
 <md-content>
 	<md-list>
 		<md-list-item class="md-2-line" ng-repeat="rest in _ctrl.restaurants">
-			<img ng-src="{{rest.avatar}}" class="md-avatar thumb" alt="{{rest.name}}" />
+			<img ng-src="{{rest.avatarUrl}}" class="md-avatar thumb" alt="{{rest.name}}" />
 			<div class="md-list-item-text" layout="column">
 				<h3> {{ rest.name }} </h3>
 				<md-icon md-svg-src="./img/home.svg" ng-click="_ctrl.openRestaurant(rest)" aria-label="Delete" class="md-secondary first"></md-icon>

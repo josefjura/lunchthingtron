@@ -3,7 +3,7 @@
 window.$ = require('jquery');
 
 module services {
-	export class ZomatoScrape {
+	export class ZomatoScrape implements IZomatoService {
 
 		$q: ng.IQService;
 		logger: ng.ILogService;
@@ -16,74 +16,66 @@ module services {
 			this.$http = $http;
 		}
 
-		readUrlAsync(id, url) {
+		loadMenu(rest: model.RestaurantConfig): ng.IPromise<responses.ServiceResponse> {
 			var result = {};
-			var deffered = this.$q.defer();
+			var deffered = this.$q.defer<responses.ServiceResponse>();
 
-			var searchIndex = url.indexOf('?');
-			var dailyMenuUrl = url.splice(searchIndex, 0, "/menu#daily");
+			var searchIndex = rest.url.indexOf('?');
+			var dailyMenuUrl = rest.url.splice(searchIndex, 0, "/menu#daily");
 
 			this.$http.get(dailyMenuUrl)
 				.then((response) => {
-					var parseRes = this.parseResponse(id, response.data, true);
-					result = { success: true, result: parseRes };
-					deffered.resolve(result);
+					var parseRes = this.parseMenu(rest, response.data, true);
+					deffered.resolve(new responses.Ok(parseRes));
 				},
 				(error) => {
-					this.logger.log(error);
-					result = { success: false, error: error };
-					deffered.resolve(result);
+					this.logger.log(error);					
+					deffered.resolve(new responses.Error(error));
 				});
 
 			return deffered.promise;
 		};
 
-		searchAsync(searchTerm) {
-			var deffered = this.$q.defer();
+		searchAsync(searchTerm): ng.IPromise<responses.ServiceResponse> {
+			var deffered = this.$q.defer<responses.ServiceResponse>();
 			var url = 'https://www.zomato.com/cs/praha/restaurace?q=' + encodeURIComponent(searchTerm);
-			this.$http.get(url)
+			this.$http.get<model.ScrapeSearchResponse>(url)
 				.then((response) => {
 					var searchRes = this.parseSearch(response.data);
-					deffered.resolve({ success: true, result: searchRes });
+					deffered.resolve(new responses.Ok(searchRes));
 				},
 				(error) => {
 					this.logger.log(error);
-					deffered.resolve({ success: false, error: error });
+					deffered.resolve(new responses.Error(error));
 				});
 
 			return deffered.promise;
 		};
 
-		private parseResponse(id, data, parseItems) {
-			if (parseItems === undefined || parseItems === null) {
-				parseItems = false;
-			}
-			var items = [];
+		private parseMenu(rest: model.RestaurantConfig, data, parseItems: boolean): model.Restaurant {
 			var name = $(data).find('.res-name a span').text();
 			var container = $(data).find('#daily-menu-container');
 			var today = $(container).find('.tmi-group')[0];
+			
+			var toReturn = new model.Restaurant(rest);			
 
-			if (today && parseItems) {
+			if (today) {
 				var itemselms = $(today).find('.tmi-daily');
 				if (itemselms.length) {
 					$.each(itemselms, (index, item) => {
 						var text = $(item).find('.tmi-text-group').text().trim();
 						var price = $(item).find('.tmi-price').text().trim();
 
-						items.push({
-							text: text,
-							price: price
-						});
+						toReturn.menu.items.push(new model.MenuItem(text, price));
 					});
 				}
 			}
-
-			return { id: id, name: name, menu: items };
+			return toReturn;
 		}
 
-		private parseSearch(data) {
+		private parseSearch(data): model.RestaurantConfig[] {
 			var searchResults = $(data).find('a.result-title');
-			var toReturn = [];
+			var toReturn: model.RestaurantConfig[];
 			for (var i in searchResults) {
 				if (searchResults.hasOwnProperty(i)) {
 					var element = searchResults[i];
@@ -91,7 +83,7 @@ module services {
 					var id = name.replace(' ', '').toLowerCase();
 					var url = $(element).attr('href');
 					if (name && id && url) {
-						toReturn.push({ id: id, name: name, url: url });
+						toReturn.push(new model.RestaurantConfig(name, url, id));
 					}
 				}
 			}
