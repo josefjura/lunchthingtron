@@ -8,12 +8,14 @@ module controllers {
         zomato: services.IZomatoService;
         logger: ng.ILogService;
 
-        static $inject = ['$q', '$log', 'ZomatoAPI', 'UserConfig'];
-        constructor($q: ng.IQService, $log: ng.ILogService, ZomatoAPI: services.IZomatoService, UserConfig: services.UserConfig) {
+        static $inject = ['$q', '$log', '$stateParams', 'ZomatoAPI', 'UserConfig'];
+        constructor($q: ng.IQService, $log: ng.ILogService, $stateParams, ZomatoAPI: services.IZomatoService, UserConfig: services.UserConfig) {
             this.title = this.getDate();
             this.config = UserConfig.getRestaurantList();
             this.logger = $log;
             this.zomato = ZomatoAPI;
+
+            $log.log($stateParams.refresh);
 
             this.loadRestaurants();
         }
