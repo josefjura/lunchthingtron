@@ -16,14 +16,18 @@ module services {
 			this.$http = $http;
 		}
 
-		loadMenu(rest: model.RestaurantConfig, cache: boolean): ng.IPromise<responses.ServiceResponse> {
+		loadMenu(rest: model.RestaurantConfig, force: boolean): ng.IPromise<responses.ServiceResponse> {
 			var result = {};
 			var deffered = this.$q.defer<responses.ServiceResponse>();
 
 			var searchIndex = rest.url.indexOf('?');
 			var dailyMenuUrl = rest.url.splice(searchIndex, 0, "/menu#daily");
 
-			this.$http.get(dailyMenuUrl, { cache: cache })
+			if (force){
+				dailyMenuUrl += "&force";
+			}
+
+			this.$http.get(dailyMenuUrl, { cache: !force })
 				.then((response) => {
 					var parseRes = this.parseMenu(rest, response.data, true);
 					deffered.resolve(new responses.Ok(parseRes));

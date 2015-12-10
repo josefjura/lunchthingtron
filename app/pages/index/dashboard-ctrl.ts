@@ -15,19 +15,30 @@ module controllers {
             this.logger = $log;
             this.zomato = ZomatoAPI;
 
-            var refresh = ($stateParams.refresh);
-            
+            var refresh = $stateParams.refresh === 'true';
+            $log.log("Refresh: " + refresh);
+
             this.loadRestaurants(refresh);
         }
 
         loadRestaurants(force: boolean): void {
-            if (!force && this.restaurants != null) return;
+            var desynced = this.restaurants.length != this.config.length;
+            var emptyData = this.restaurants == null;
+            if (!force && !emptyData && !desynced) return;
+
+            if (force == true)
+                this.logger.log("Forced reload");
+            else if (emptyData)
+                this.logger.log("Empty source data, reloading.");
+            else if (desynced)
+                this.logger.log("Desynced data, reloading");
+
 
             this.restaurants = new Array<model.Restaurant>();
             for (var i = 0; i < this.config.length; i++) {
                 var item = this.config[i];
                 var restaurant: model.Restaurant;
-                this.zomato.loadMenu(item).
+                this.zomato.loadMenu(item, force).
                     then((result) => {
                         result.data.loaded = true;
                         result.data.success = result.success && (result.data.menu.items.length > 0);
