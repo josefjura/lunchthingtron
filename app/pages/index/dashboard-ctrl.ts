@@ -16,7 +16,7 @@ module controllers {
             this.zomato = ZomatoAPI;
 
             var refresh = ($stateParams.refresh);
-
+            
             this.loadRestaurants(refresh);
         }
 
