@@ -12,6 +12,7 @@ module controllers {
 		userConfig: services.UserConfig;
 		zomato: services.IZomatoService;
 		logger: ng.ILogService;
+		changed: boolean;
 
 
 
@@ -21,8 +22,9 @@ module controllers {
 			this.userConfig = UserConfig;
 			this.logger = logger;
 			this.zomato = ZomatoAPI;
+			this.changed = false;
 		}
-		
+
 		search() {
 			this.results = [];
 			this.isSearching = true;
@@ -43,7 +45,7 @@ module controllers {
 		};
 
 		hide() {
-			this.dialogService.hide();
+			this.dialogService.hide(this.changed);
 		}
 
 		stateChange(rest) {
@@ -57,12 +59,14 @@ module controllers {
 
 		add(item) {
 			if (!item.added) {
+				this.changed = true;
 				this.userConfig.addRestaurant(item);
 				item.added = true;
 			}
 		};
 
 		remove(item) {
+			this.changed = true;
 			this.userConfig.removeRestaurant(item);
 			item.added = false;
 		};
