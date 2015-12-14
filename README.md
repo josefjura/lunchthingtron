@@ -8,6 +8,7 @@ To run this
 * clone the repository: *git clone https://github.com/josefjura/lunchthingtron-electron.git*
 * install dependencies: *cd lunchthingtron-electron && npm install*
 * set your zomato API key in *config/apiKey.json* to {"key": "YOUR-API-KEY"}
+* install typings: *tsd install*
 * run with watches: *npm run start*
 
  
