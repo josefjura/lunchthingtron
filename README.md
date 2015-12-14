@@ -9,6 +9,7 @@ To run this
 * install dependencies: *cd lunchthingtron-electron && npm install*
 * set your zomato API key in *config/apiKey.json* to {"key": "YOUR-API-KEY"}
 * install typings: *tsd install*
+* do first build: *gulp build*
 * run with watches: *npm run start*
 
  
