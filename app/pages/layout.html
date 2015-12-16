@@ -1,1 +1,11 @@
-<ui-view name="pageContent"></ui-view>
+<win-split-view-pane-toggle split-view="splitViewElement">
+</win-split-view-pane-toggle>
+<win-split-view id="splitView">
+	<win-split-view-pane>
+		<win-split-view-command label="'Home'" icon="'home'" on-invoked="_ctrl.goToDashboard()"></win-split-view-command>
+		<win-split-view-command label="'Settings'" icon="'settings'" on-invoked="_ctrl.goToRestaurants()"></win-split-view-command>
+	</win-split-view-pane>
+	<win-split-view-content>
+		<ui-view id="contenthost" class="turnstile-animation" name="pageContent"></ui-view>
+	</win-split-view-content>
+</win-split-view>

@@ -1,27 +1,42 @@
 ﻿<div layout="column" layout-fill ng-cloak flex>
-    <md-toolbar>
-        <div class="md-toolbar-tools">
-            <h2>
+
+    <div class="md-toolbar-tools">
+        <h2>
                 <span>{{_ctrl.title}}</span>
             </h2>
-            <span flex></span>
-            <span>LunchThingtron</span>
-            <md-button class="md-icon-button" aria-label="Refresh" ng-click="_ctrl.loadRestaurants()">
-                <md-icon md-svg-src="./img/refresh.svg"></md-icon>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="Settings">
-                <a ui-sref="main.restaurants">
-                    <md-icon md-svg-src="./img/resto.svg"></md-icon>
-                </a>
-            </md-button>
-        </div>
-    </md-toolbar>
-    <md-content class="restaurantContent">
-        <section ng-repeat="restaurant in _ctrl.restaurants">
-            <md-subheader class="md-primary" ng-class="{'md-accent':!restaurant.success}">
+        <span flex></span>
+        <span>LunchThingtron</span>
+        <!--        <md-button class="md-icon-button" aria-label="Refresh" ng-click="_ctrl.loadRestaurants()">
+            <md-icon md-svg-src="./img/refresh.svg"></md-icon>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="Settings">
+            <a ui-sref="main.restaurants">
+                <md-icon md-svg-src="./img/resto.svg"></md-icon>
+            </a>
+        </md-button>-->
+    </div>
+
+    <!--    <md-content class="restaurantContent">-->
+
+    <win-list-view item-data-source="_ctrl.restaurants" selection="selection">
+        <win-list-view-header></win-list-view-header>
+        <win-item-template>
+            <div>
+                <h3>{{item.data.name}}</h3>
+                <div ng-repeat="menuitem in item.data.menu.items">
+                    {{menuitem.text}}
+                </div>
+            </div>
+        </win-item-template>
+        <win-list-view-footer></win-list-view-footer>
+        <win-grid-layout></win-grid-layout>
+    </win-list-view>
+
+
+    <!--            <md-subheader class="md-primary" ng-class="{'md-accent':!restaurant.success}">
                 <h2>{{ restaurant.name }}<span ng-show="!restaurant.success"> - daily menu not available</span></h2>
-            </md-subheader>
-            <md-list ng-show="restaurant.loaded">
+            </md-subheader>-->
+    <!--            <md-list ng-show="restaurant.loaded">
                 <md-list-item ng-repeat="item in restaurant.menu.items">
                     <div class="md-list-item-text" style="padding-right: 40px;">
                         {{item.text}}
@@ -32,7 +47,7 @@
             </md-list>
             <div layout="row" layout-sm="column" layout-align="center center" ng-show="!restaurant.loaded">
                 <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-            </div>
-        </section>
-    </md-content>
+            </div>-->
+    </section>
+    <!--    </md-content>-->
 </div>
